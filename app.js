@@ -2,26 +2,23 @@
     IMPORTAR LOS MÓDULOS.
 */
 const express = require('express');
+const bodyParser = require('body-parser');
+const controladorPeliculas = require('./api/peliculas/controller');
+const controladorUsuarios = require('./api/usuarios/controller');
 
 /*
     INICIAR LA CONFIGURACIÓN
 */
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 const port = 3300;
 
 /*
     INICIAR LAS RUTAS
 */
-app.get("/prueba", function(request, response){
-    // PROCESAR LA PETICIÓN
-    let nombres = "José Miguel Dager Montoya";
-    //ENVIAR LA RESPUESTA
-    response.send(nombres);
-});
-
-app.get("/misiontic", function(request, response){
-    response.send("Mi primer API 53861");    
-});
+app.use("/api/peliculas", controladorPeliculas);
+app.use("/api/usuarios", controladorUsuarios);
 
 /*
     CONFIGURAR DÓNDE EL API VA ESTAR MONITOREANDO PETICIONES.
