@@ -1,5 +1,6 @@
 const express = require('express');
 const controladorPeliculas = express.Router();
+const servicioPeliculas = require('./service');
 
 /*
     GET -> OBTENER TODAS LAS PELÍCULAS
@@ -10,9 +11,12 @@ const controladorPeliculas = express.Router();
     DELETE -> ELIMINAR PELÍCUAS.
 */
 
-controladorPeliculas.get("/obtenerPeliculas", function(req, res){
-    // CAPTURAR LOS DATOS Y ENVIARLOS AL SERVICIO
-    res.send("Listado de películas...");
+controladorPeliculas.get("/obtenerPeliculas", async function(req, res){
+    let peliculas = await servicioPeliculas.obtenerPeliculas();
+    res.send({
+        "mensaje": "Listado de Películas",
+        "data": peliculas
+    });
 });
 
 module.exports = controladorPeliculas;
