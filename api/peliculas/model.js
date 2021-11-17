@@ -34,11 +34,19 @@ function buscarPorId(id){
         });
 }
 
-function buscarPorTitulo(nombre)
-{
+function buscarPorTitulo(nombre, exacta){
     let db=basedatos.obtenerConexion();
     // /man/i -> RegExp -> patron = nombre modificador -> i
-    return db.collection("peliculas").find({"titulo": new RegExp(nombre,"i")}).toArray()
+    let busqueda;
+
+    if(exacta){
+        busqueda = nombre;
+    }
+    else{
+        busqueda = new RegExp(nombre,"i");
+    }
+
+    return db.collection("peliculas").find({"titulo": busqueda}).toArray()
     .then(function(datos){
         return datos;
     })
@@ -47,6 +55,42 @@ function buscarPorTitulo(nombre)
     });
 }
 
+function crearUna(pelicula){
+    let db = basedatos.obtenerConexion();
+    /*
+        db.peliculas.insertOne(
+            {
+                "titulo" : "The Godfather",
+                "generos" : ["A", "B"]
+            }
+        )
+    */
+    return db.collection("peliculas").insertOne(pelicula)
+        .then(function(resultado){
+            return resultado;
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+}
+
+function actualizarUna(id, nuevosDatos){
+    let db = basedatos.obtenerConexion();
+
+    return db.collection("peliculas").updateOne(
+            {"_id":objectId(id)}, // Filtro
+            {"$set":nuevosDatos} // Operación de actualización --- $set, $unset 
+        )
+        .then(function(resultado){
+            return resultado;
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+}
+
 module.exports.buscarTodos = buscarTodos;
 module.exports.buscarPorId = buscarPorId;
 module.exports.buscarPorTitulo=buscarPorTitulo;
+module.exports.crearUna = crearUna;
+module.exports.actualizarUna = actualizarUna;

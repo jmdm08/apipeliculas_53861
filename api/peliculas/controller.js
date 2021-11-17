@@ -42,19 +42,43 @@ controladorPeliculas.get("/obtenerPelicula/:id", async function(req, res){
     });
 })
 
-/*
-CONTROLKADOR PARA BUSCAR PELICULA POR NOMBRE
-*/
+/**
+ * CONTROLADOR PARA BUSCAR PELÍCULAS POR NOMBRE 
+ */
 controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res){
-    let nombre=req.params.nombre;
-    let peliculas=await servicioPeliculas.buscarPeliculasTitulo(nombre);
+    let nombre = req.params.nombre;
+    let peliculas = await servicioPeliculas.buscarPeliculasTitulo(nombre);
     res.send(
         {
-            "mensaje":"Resultado de busqueda",
-            "busqueda":nombre,
-            "datos":peliculas
+            "mensaje": "Resultado de busqueda",
+            "busqueda": nombre,
+            "datos": peliculas
         }
     );
 })
+
+controladorPeliculas.post("/crearPelicula", async function(req, res){
+    /*
+        body = {
+            "titulo" : "The Godfather",
+            "generos" : ["A", "B"]
+        }
+    */
+    let pelicula = req.body;
+    let resultado = await servicioPeliculas.crearPelicula(pelicula);
+    res.send(resultado);
+});
+
+/*
+    id -> Parámetros
+    nuevosDatos -> Body
+*/
+controladorPeliculas.put("/actualizarPelicula/:id", async function(req, res){
+    let id = req.params.id;
+    let nuevosDatos = req.body;
+    let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
+    res.send(resultado);
+})
+
 
 module.exports = controladorPeliculas;
