@@ -73,6 +73,9 @@ controladorPeliculas.post("/crearPelicula", async function(req, res){
     id -> Parámetros
     nuevosDatos -> Body
 */
+/**
+ * ACTUALIZAR PELÍCULA
+ */
 controladorPeliculas.put("/actualizarPelicula/:id", async function(req, res){
     let id = req.params.id;
     let nuevosDatos = req.body;
@@ -80,5 +83,14 @@ controladorPeliculas.put("/actualizarPelicula/:id", async function(req, res){
     res.send(resultado);
 })
 
+// http://localhost:3300/api/peliculas/eliminarPelicula?id=xxxx
+/**
+ * ELIMINAR PELÍCULA POR ID
+ */
+controladorPeliculas.delete("/eliminarPelicula", async function(req, res){
+    let id = req.query.id;
+    let resultado = await servicioPeliculas.eliminarPelicula(id);
+    res.send(resultado);
+})
 
 module.exports = controladorPeliculas;

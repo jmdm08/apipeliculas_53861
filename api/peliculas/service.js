@@ -103,8 +103,29 @@ async function actualizarPelicula(id, nuevosDatos){
     return resultado;
 }
 
+async function eliminarPelicula(id){
+    let resultado = {};
+    if(id && id.length == 24 && /^[0-9A-F]+$/i.test(id)){
+        let resultadoEliminar = await modeloPeliculas.eliminarUna(id);
+        if(resultadoEliminar && resultadoEliminar.acknowledged){
+            resultado.mensaje = "Película eliminada correctamente";
+            resultado.datos = resultadoEliminar;
+        }
+        else{
+            resultado.mensaje = "Error al eliminar película";
+            resultado.datos = id;
+        }
+    }
+    else{
+        resultado.mensaje = "ID inválido";
+        resultado.datos = id;
+    }
+    return resultado;
+}
+ 
 module.exports.obtenerPeliculas = obtenerPeliculas;
 module.exports.obtenerPelicula = obtenerPelicula;
 module.exports.buscarPeliculasTitulo=buscarPeliculasTitulo;
 module.exports.crearPelicula = crearPelicula;
 module.exports.actualizarPelicula = actualizarPelicula;
+module.exports.eliminarPelicula = eliminarPelicula;

@@ -89,8 +89,21 @@ function actualizarUna(id, nuevosDatos){
         });
 }
 
+function eliminarUna(id){
+    let db = basedatos.obtenerConexion();
+
+    return db.collection("peliculas").deleteOne({"_id":objectId(id)})
+        .then(function(resultado){
+            return resultado;
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+}
+
 module.exports.buscarTodos = buscarTodos;
 module.exports.buscarPorId = buscarPorId;
 module.exports.buscarPorTitulo=buscarPorTitulo;
 module.exports.crearUna = crearUna;
 module.exports.actualizarUna = actualizarUna;
+module.exports.eliminarUna = eliminarUna;
