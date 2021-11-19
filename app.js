@@ -4,6 +4,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
 const controladorPeliculas = require('./api/peliculas/controller');
 const controladorUsuarios = require('./api/usuarios/controller');
 const basedatos = require('./database/connection');
@@ -13,6 +16,9 @@ require('dotenv').config();
     INICIAR LA CONFIGURACIÓN
 */
 const app = express();
+app.use(cors());
+app.use(helmet());
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan(process.env.MORGAN_MODE));

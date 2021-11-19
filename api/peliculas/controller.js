@@ -1,6 +1,7 @@
 const express = require('express');
 const controladorPeliculas = express.Router();
 const servicioPeliculas = require('./service');
+const rutaProtegida = require('../auth/jwt').validarToken;
 
 /*
     GET -> OBTENER TODAS LAS PELÍCULAS - OK
@@ -22,7 +23,7 @@ const servicioPeliculas = require('./service');
 /**
  * CONTROLADOR PARA BUSCAR TODAS LAS PELÍCULAS...
  */
-controladorPeliculas.get("/obtenerPeliculas", async function(req, res){
+controladorPeliculas.get("/obtenerPeliculas", rutaProtegida, async function(req, res){
     let peliculas = await servicioPeliculas.obtenerPeliculas();
     res.send({
         "mensaje": "Listado de Películas",
@@ -33,7 +34,7 @@ controladorPeliculas.get("/obtenerPeliculas", async function(req, res){
 /**
  * CONTROLADOR PARA BUSCAR UNA PELÍCULA POR ID
  */
-controladorPeliculas.get("/obtenerPelicula/:id", async function(req, res){
+controladorPeliculas.get("/obtenerPelicula/:id", rutaProtegida, async function(req, res){
     let id = req.params.id;
     let pelicula = await servicioPeliculas.obtenerPelicula(id);
     res.send({
@@ -57,7 +58,7 @@ controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res
     );
 })
 
-controladorPeliculas.post("/crearPelicula", async function(req, res){
+controladorPeliculas.post("/crearPelicula", rutaProtegida, async function(req, res){
     /*
         body = {
             "titulo" : "The Godfather",
@@ -76,7 +77,7 @@ controladorPeliculas.post("/crearPelicula", async function(req, res){
 /**
  * ACTUALIZAR PELÍCULA
  */
-controladorPeliculas.put("/actualizarPelicula/:id", async function(req, res){
+controladorPeliculas.put("/actualizarPelicula/:id", rutaProtegida, async function(req, res){
     let id = req.params.id;
     let nuevosDatos = req.body;
     let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
@@ -87,7 +88,7 @@ controladorPeliculas.put("/actualizarPelicula/:id", async function(req, res){
 /**
  * ELIMINAR PELÍCULA POR ID
  */
-controladorPeliculas.delete("/eliminarPelicula", async function(req, res){
+controladorPeliculas.delete("/eliminarPelicula", rutaProtegida, async function(req, res){
     let id = req.query.id;
     let resultado = await servicioPeliculas.eliminarPelicula(id);
     res.send(resultado);
