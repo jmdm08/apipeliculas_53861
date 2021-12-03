@@ -13,7 +13,13 @@ const objectId = require('mongodb').ObjectId;
 function buscarTodos(){
     let db = basedatos.obtenerConexion();
 
-    return db.collection("peliculas").find({}).toArray()
+    /*
+        TODO: PAGINACIÓN
+            -> limit()
+            -> skip()
+    */
+
+    return db.collection("peliculas").find({}).limit(100).toArray()
         .then(function(data){
             return data;
         })
