@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 const compression = require('compression');
 const controladorPeliculas = require('./api/peliculas/controller');
 const controladorUsuarios = require('./api/usuarios/controller');
@@ -29,6 +30,16 @@ const port = process.env.PORT;
 */
 app.use("/api/peliculas", controladorPeliculas);
 app.use("/api/usuarios", controladorUsuarios);
+
+/*
+    CONFIGURAR LA CARPETA PÚBLICA
+*/
+const publicPath = path.resolve(__dirname, 'public');
+app.use(express.static(publicPath));
+
+app.get("/", function(req, res){
+    res.sendFile( path.join(__dirname+"./index.html") );
+})
 
 /*
     CONFIGURAR DÓNDE EL API VA ESTAR MONITOREANDO PETICIONES.
